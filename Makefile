@@ -9,9 +9,11 @@ develop-only: update-submodules
 	pip install -e .
 	pip install "file://`pwd`#egg=sentry[dev]"
 
-develop: update-submodules setup-git develop-only
+develop-without-git: update-submodules develop-only
 	pip install "file://`pwd`#egg=sentry[tests]"
 	@echo ""
+
+develop: develop-without-git setup-git
 
 dev-postgres: develop
 	pip install "file://`pwd`#egg=sentry[postgres]"
@@ -62,7 +64,7 @@ update-submodules:
 	git submodule update
 	@echo ""
 
-test: develop lint test-js test-python test-cli
+test: develop-without-git lint test-js test-python test-cli
 
 testloop: develop
 	pip install pytest-xdist
